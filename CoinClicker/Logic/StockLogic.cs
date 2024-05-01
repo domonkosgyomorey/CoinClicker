@@ -130,6 +130,8 @@ namespace CoinClicker
                 }
                 else { 
                     stock.PrevPrice += inc;
+                    stock.Prices.Add(stock.PrevPrice + inc);
+                    stock.Dates.Add(stock.Time++);
                 }
 
             }

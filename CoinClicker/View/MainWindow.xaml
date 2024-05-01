@@ -38,7 +38,7 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <local:OutlinedTextBlock Fill="White" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="Clicker" FontSize="52"  FontWeight="SemiBold"/>
+                <local:OutlinedTextBlock Fill="White" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="Coin Clicker" FontSize="52"  FontWeight="SemiBold"/>
                 <Button Margin="10" Grid.Row="3" Grid.Column="1" Click="PlayBtn_click" >
                     <local:OutlinedTextBlock Text="Play" HorizontalAlignment="Center" Fill="White" FontSize="38"/>
                     <Button.Background>

@@ -35,7 +35,7 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <Label Margin="5" FontSize="18" Style="{StaticResource DefaultFontColorAndFamily}" Grid.Row="0" Content="Stock type:"/>
+                <Label FontSize="18" Style="{StaticResource DefaultFontColorAndFamily}" Grid.Row="0" Content="Stock type:"/>
                 <ComboBox Margin="5" Grid.Row="1" ItemsSource="{Binding StockLogic.Market, Converter={StaticResource MarketToStringConverter}}" SelectedItem="{Binding StockLogic.SelectedStockName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16"/>
             </Grid>
         </Grid>
