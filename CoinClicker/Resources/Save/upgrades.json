@@ -1,0 +1,72 @@
+[
+  {
+    "AmountPerSec": 1,
+    "Price": 14,
+    "NumberOf": 0,
+    "PriceIncreaseRatio": 1.4,
+    "Path": "shovel.png"
+  },
+  {
+    "AmountPerSec": 3,
+    "Price": 50,
+    "NumberOf": 0,
+    "PriceIncreaseRatio": 1.4,
+    "Path": "pickaxe.png"
+  },
+  {
+    "AmountPerSec": 10,
+    "Price": 300,
+    "NumberOf": 0,
+    "PriceIncreaseRatio": 1.4,
+    "Path": "drillingmachine.png"
+  },
+  {
+    "AmountPerSec": 30,
+    "Price": 1500,
+    "NumberOf": 0,
+    "PriceIncreaseRatio": 1.4,
+    "Path": "bulldozer.png"
+  },
+  {
+    "AmountPerSec": 100,
+    "Price": 7000,
+    "NumberOf": 0,
+    "PriceIncreaseRatio": 1.4,
+    "Path": "worker.png"
+  },
+  {
+    "AmountPerSec": 500,
+    "Price": 15000,
+    "NumberOf": 0,
+    "PriceIncreaseRatio": 1.4,
+    "Path": "donutshop.png"
+  },
+  {
+    "AmountPerSec": 2000,
+    "Price": 50000,
+    "NumberOf": 0,
+    "PriceIncreaseRatio": 1.4,
+    "Path": "office.png"
+  },
+  {
+    "AmountPerSec": 10000,
+    "Price": 1000000,
+    "NumberOf": 0,
+    "PriceIncreaseRatio": 1.4,
+    "Path": "oilpump.png"
+  },
+  {
+    "AmountPerSec": 100000,
+    "Price": 30000000,
+    "NumberOf": 0,
+    "PriceIncreaseRatio": 1.4,
+    "Path": "oilrefinery.png"
+  },
+  {
+    "AmountPerSec": 1e+55,
+    "Price": 0,
+    "NumberOf": 0,
+    "PriceIncreaseRatio": 0,
+    "Path": "c.png"
+  }
+]

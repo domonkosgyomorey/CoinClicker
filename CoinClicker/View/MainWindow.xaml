@@ -1,0 +1,164 @@
+﻿<Window x:Class="CoinClicker.MainWindow"
+        Name="window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CoinClicker"
+        mc:Ignorable="d"
+        Title="Coin Clicker" Height="720" Width="1280" MinWidth="1280" MinHeight="720"
+        WindowStyle="SingleBorderWindow"
+        Icon="{Binding CoinIconPath}">
+    <Window.Resources>
+        <local:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
+        <local:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
+        <local:DoubleToShortStringConverter x:Key="DoubleToShortStringConverter"/>
+        <local:CoinUpgradeEnumToIntConverter x:Key="CoinUpgradeEnumToIntConverter" />
+        <local:StockUnlockStateToStringConverter x:Key="StockUnlockStateToStringConverter" />
+        <local:TutorialStateToStringConverter x:Key="TutorialStateToStringConverter"/>
+    </Window.Resources>
+    <Window.Background>
+        <ImageBrush ImageSource="{Binding BackgroundPath}"/>
+    </Window.Background>
+    <Border CornerRadius="0" BorderBrush="RoyalBlue" BorderThickness="3">
+        <Grid>
+            <Grid Visibility="{Binding MenuVisible, Converter={StaticResource BoolVisibilityConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <local:OutlinedTextBlock Fill="White" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="Clicker" FontSize="52"  FontWeight="SemiBold"/>
+                <Button Margin="10" Grid.Row="3" Grid.Column="1" Click="PlayBtn_click" >
+                    <local:OutlinedTextBlock Text="Play" HorizontalAlignment="Center" Fill="White" FontSize="38"/>
+                    <Button.Background>
+                        <SolidColorBrush Opacity="0.5"/>
+                    </Button.Background>
+                </Button>
+                <Button Margin="10" Grid.Row="4" Grid.Column="1" >
+                    <local:OutlinedTextBlock Text="Option" HorizontalAlignment="Center" Fill="White" FontSize="38"/>
+                    <Button.Background>
+                        <SolidColorBrush Opacity="0.5"/>
+                    </Button.Background>
+                </Button>
+                <Button Margin="10" Grid.Row="5" Grid.Column="1" Click="ExitBtn_Click" >
+                    <local:OutlinedTextBlock Text="Exit" HorizontalAlignment="Center" Fill="White" FontSize="38"/>
+                    <Button.Background>
+                        <SolidColorBrush Opacity="0.5"/>
+                    </Button.Background>
+                </Button>
+            </Grid>
+            <Grid Visibility="{Binding GameVisible, Converter={StaticResource BoolVisibilityConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="6*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Name="displayGrid" DataContext="{Binding ClickerLogic.Player}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="50*"/>
+                        <RowDefinition Height="10*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal"  Grid.Row="0">
+                        <local:OutlinedTextBlock x:Name="money" Fill="White" Text="{Binding Money, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DoubleToStringConverter}}" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20, 5, 10, 5" FontWeight="SemiBold"/>
+                        <Image VerticalAlignment="Center" HorizontalAlignment="Left" Source="{Binding ElementName=window, Path=Icon}" Width="{Binding ElementName=money, Path=FontSize}" Height="{Binding ElementName=money, Path=FontSize}"/>
+                        <local:OutlinedTextBlock FontSize="18" Text="{Binding IncomePerSec, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" Fill="White" StrokeThickness="0" ContentStringFormat=" /sec" Margin="50, 10, 10, 10" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button Style="{StaticResource HomeButton}" Grid.Row="2" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.HomeButtonClicked}">
+                        <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.HomeImagePath}"/>
+                    </Button>
+                </Grid>
+                <ScrollViewer  VerticalScrollBarVisibility="Visible" Grid.Column="1" Foreground="White" DataContext="{Binding ClickerLogic}">
+
+                    <StackPanel Grid.Column="1" DataContext="{Binding Player}">
+                        <Border Style="{StaticResource UpgradeCardFrame}">
+                            <StackPanel  Margin="10">
+                                <Label Content="Tutorial" Style="{StaticResource DefaultFontColorAndFamily}" HorizontalContentAlignment="Center" FontSize="16"/>
+                                <Label Content="{Binding TutorialUnlockPrice, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}$" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16"/>
+                                <Button Style="{StaticResource UpgradeBuyBtnStyle}" Content="{Binding TutorialState, Converter={StaticResource TutorialStateToStringConverter}, UpdateSourceTrigger=PropertyChanged}" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.TutorialUnlockCommand}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource UpgradeCardFrame}">
+                            <StackPanel  Margin="10">
+                                <Label Content="Click power" Style="{StaticResource DefaultFontColorAndFamily}" HorizontalContentAlignment="Center" FontSize="16"/>
+                                <Label Content="{Binding ClickPowerUpgradePrice, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}$" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16"/>
+                                <Label Content="{Binding ClickPowerUpgradeMultiplier, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}x" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16"/>
+                                <Button Style="{StaticResource UpgradeBuyBtnStyle}" Content="Upgrade" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.BuyClickUpgradeCommand}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource UpgradeCardFrame}">
+                            <StackPanel  Margin="10">
+                                <Label Content="Increase income"  Style="{StaticResource DefaultFontColorAndFamily}" HorizontalContentAlignment="Center" FontSize="16" />
+                                <Label Content="{Binding CoinLevel, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CoinUpgradeEnumToIntConverter}}" ContentStringFormat="Coin level: {0}" Style="{StaticResource DefaultFontColorAndFamily}" HorizontalContentAlignment="Center" FontSize="16"/>
+                                <Label Content="{Binding CoinUpgradePrice, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}$" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16"/>
+                                <Label Content="{Binding IncreaseAllIncomeBy, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}x" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16"/>
+                                <Button Style="{StaticResource UpgradeBuyBtnStyle}" Content="Upgrade" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.BuyCoinUpgradeCommand}" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource UpgradeCardFrame}">
+                            <StackPanel  Margin="10">
+                                <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.StockImagePath}" />
+                                <Label Content="{Binding StockUnlockPrice, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}$" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16"/>
+                                <Button Style="{StaticResource UpgradeBuyBtnStyle}" Content="{Binding StockState, Converter={StaticResource StockUnlockStateToStringConverter}}" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.StockClickCommand}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource UpgradeCardFrame}">
+                            <StackPanel  Margin="10">
+                                <Label Content="Stock view upgrade" Style="{StaticResource DefaultFontColorAndFamily}" HorizontalContentAlignment="Center" FontSize="16"/>
+                                <Label Content="{Binding StockChartUpgradePrice, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}$" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16"/>
+                                <Label Content="{Binding StockHistMemoryMultiplier, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}x" Style="{StaticResource DefaultFontColorAndFamily}" HorizontalContentAlignment="Center" FontSize="16"/>
+                                <Button Style="{StaticResource UpgradeBuyBtnStyle}" Content="Upgrade" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.StockViewUpgradeCommand}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource UpgradeCardFrame}">
+                            <StackPanel  Margin="10">
+                                <Label Content="Bonus time income" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding BonusIncomeUpgradePrice, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}$" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16"/>
+                                <Label Content="{Binding IncomeBonusUpgradeMultiplier}" ContentStringFormat=" {0}x" Style="{StaticResource DefaultFontColorAndFamily}" HorizontalContentAlignment="Center" FontSize="16"/>
+                                <Button Style="{StaticResource UpgradeBuyBtnStyle}" Content="Upgrade" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.BuyBonusIncomeUpgradeCommand}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+                <ScrollViewer  VerticalScrollBarVisibility="Visible" Grid.Column="2" Foreground="White" DataContext="{Binding ClickerLogic}">
+                    <ItemsControl ItemsSource="{Binding FullUpgrades}" FontSize="16">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource UpgradeCardFrame}">
+                                    <StackPanel  Margin="10">
+                                        <Image Source="{Binding Image}" Stretch="UniformToFill"/>
+                                        <Label Content="{Binding Upgrade.Price, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}$" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}"/>
+                                        <Label Content="{Binding Upgrade.AmountPerSec, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}$ /sec" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}"/>
+                                        <Button Style="{StaticResource UpgradeBuyBtnStyle}" Content="Buy" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.BuyUpgradeCommand}" CommandParameter="{Binding Upgrade}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+            <Grid Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Label Content="Option" FontSize="24"/>
+            </Grid>
+        </Grid>
+    </Border>
+
+</Window>

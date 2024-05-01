@@ -1,0 +1,53 @@
+[
+    {
+        "PriceInList": [],
+        "DatesInList": [],
+        "BuyedStockPrice": [],
+        "BuyedStock": 0,
+        "PrevPrice": 10000,
+        "Time": 0,
+        "TrendValue": 0,
+        "TrendTime": 0,
+        "Mean": 0,
+        "StdDev": 5,
+        "TrendValueMultiplier": 10,
+        "MinTrendTime": 1,
+        "MaxTrendTime": 5,
+        "Name": "base",
+        "IsDefaultStock":true
+    },
+    {
+        "PriceInList": [],
+        "DatesInList": [],
+        "BuyedStockPrice": [],
+        "BuyedStock": 0,
+        "PrevPrice": 10000000,
+        "Time": 0,
+        "TrendValue": 0,
+        "TrendTime": 0,
+        "Mean": 0,
+        "StdDev": 10,
+        "TrendValueMultiplier": 10,
+        "MinTrendTime": 1,
+        "MaxTrendTime": 3,
+        "Name": "hard",
+        "IsDefaultStock":true
+    },
+    {
+      "PriceInList": [],
+      "DatesInList": [],
+      "BuyedStockPrice": [],
+      "BuyedStock": 0,
+      "PrevPrice": 1E54,
+      "Time": 0,
+      "TrendValue": 0,
+      "TrendTime": 0,
+      "Mean": 0,
+      "StdDev": 1E53,
+      "TrendValueMultiplier": 10,
+      "MinTrendTime": 1,
+      "MaxTrendTime": 3,
+      "Name": "hardest",
+      "IsDefaultStock": true
+    }
+]

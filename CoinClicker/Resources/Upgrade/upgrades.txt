@@ -1,0 +1,11 @@
+﻿# double amountPerSec, double price, double priceIncreaseRatio, string imageUri
+1;10;1,4;shovel.png
+3;50;1,4;pickaxe.png
+10;300;1,4;drillingmachine.png
+30;1500;1,4;bulldozer.png
+100;7000;1,4;worker.png
+500;15000;1,4;donutshop.png
+2000;50000;1,4;office.png
+10000;1000000;1,4;oilpump.png
+100000;30000000;1,4;oilrefinery.png
+10000000000000000000000000000000000000000000000000000000;0;0;c.png

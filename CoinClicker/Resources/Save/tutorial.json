@@ -1,0 +1,39 @@
+﻿{
+  "Title": {
+      "Data": "- Tutorial -",
+      "FontSize": 24,
+      "InnerFontColor": "White",
+      "OuterFontColor": "Black",
+      "StrokeThickness": 1
+  },
+  "Descriptions": [
+      {
+          "Data": "- Goal: Reach bigger and bigger number",
+          "FontSize": 24,
+          "InnerFontColor": "White",
+          "OuterFontColor": "Black",
+          "StrokeThickness": 1
+      },
+      {
+          "Data": "- You can add more upgrades and custom stocks",
+          "FontSize": 24,
+          "InnerFontColor": "White",
+          "OuterFontColor": "Black",
+          "StrokeThickness": 1
+      },
+      {
+          "Data": "- Resources/Save/stock.json where you can add more stock",
+          "FontSize": 24,
+          "InnerFontColor": "White",
+          "OuterFontColor": "Black",
+          "StrokeThickness": 1
+      },
+      {
+          "Data": "- Resources/Save/upgrade.json where you can add more upgrade",
+          "FontSize": 24,
+          "InnerFontColor": "White",
+          "OuterFontColor": "Black",
+          "StrokeThickness": 1
+      }
+  ]
+}
