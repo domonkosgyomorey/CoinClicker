@@ -37,24 +37,23 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-
-                <local:OutlinedTextBlock Fill="White" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="Coin Clicker" FontSize="52"  FontWeight="SemiBold"/>
-                <Button Margin="10" Grid.Row="3" Grid.Column="1" Click="PlayBtn_click" >
+                <local:OutlinedTextBlock Fill="Gold" Stroke="DarkOrange" StrokeThickness="3" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="Coin Clicker" FontSize="68"  FontWeight="Bold"/>
+                <Button Style="{StaticResource RoundButton}" Margin="10" Grid.Row="3" Grid.Column="1" Click="PlayBtn_click">
                     <local:OutlinedTextBlock Text="Play" HorizontalAlignment="Center" Fill="White" FontSize="38"/>
                     <Button.Background>
-                        <SolidColorBrush Opacity="0.5"/>
+                        <SolidColorBrush Color="DarkOrange"/>
                     </Button.Background>
                 </Button>
-                <Button Margin="10" Grid.Row="4" Grid.Column="1" >
+                <Button Style="{StaticResource RoundButton}"  Margin="10" Grid.Row="4" Grid.Column="1" Click="OptionBtn_click" >
                     <local:OutlinedTextBlock Text="Option" HorizontalAlignment="Center" Fill="White" FontSize="38"/>
                     <Button.Background>
-                        <SolidColorBrush Opacity="0.5"/>
+                        <SolidColorBrush Color="DarkOrange"/>
                     </Button.Background>
                 </Button>
-                <Button Margin="10" Grid.Row="5" Grid.Column="1" Click="ExitBtn_Click" >
+                <Button Style="{StaticResource RoundButton}"  Margin="10" Grid.Row="5" Grid.Column="1" Click="ExitBtn_Click" >
                     <local:OutlinedTextBlock Text="Exit" HorizontalAlignment="Center" Fill="White" FontSize="38"/>
                     <Button.Background>
-                        <SolidColorBrush Opacity="0.5"/>
+                        <SolidColorBrush Color="DarkOrange"/>
                     </Button.Background>
                 </Button>
             </Grid>
@@ -155,8 +154,45 @@ AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.BuyUpgradeCommand}"
                     </ItemsControl>
                 </ScrollViewer>
             </Grid>
-            <Grid Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Label Content="Option" FontSize="24"/>
+            <Grid Visibility="{Binding OptionMenuVisible, Converter={StaticResource BoolVisibilityConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <local:OutlinedTextBlock Grid.Column="1" Fill="Gold" Stroke="DarkOrange" VerticalAlignment="Center" StrokeThickness="3" HorizontalAlignment="Center" Grid.Row="0" Text="Options" FontSize="68"  FontWeight="Bold"/>
+                <Grid Margin="50" Grid.Column="1" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <local:OutlinedTextBlock Grid.Row="0" Grid.Column="0" Fill="White" Stroke="Black" VerticalAlignment="Center" StrokeThickness="1" HorizontalAlignment="Center" Text="Fullscreen" FontSize="32" FontWeight="SemiBold"/>
+                    <CheckBox Grid.Column="1" Grid.Row="0" Padding="25" VerticalContentAlignment="Center" HorizontalAlignment="Left" x:Name="FullscreenCheckBox" Click="FullscreenCheckBox_Click">
+                        <CheckBox.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </CheckBox.LayoutTransform>
+                    </CheckBox>
+
+                    <local:OutlinedTextBlock Grid.Row="1" Grid.Column="0"  Fill="White" Stroke="Black" VerticalAlignment="Center" StrokeThickness="1" HorizontalAlignment="Center" Text="Volume" FontSize="32" FontWeight="SemiBold"/>
+                    <StackPanel Grid.Row="1" Grid.Column="1">
+                        <local:OutlinedTextBlock Grid.Row="1" Grid.Column="0" Margin="10" Fill="White" Stroke="Black" VerticalAlignment="Center" StrokeThickness="1" HorizontalAlignment="Center" Text="{Binding ElementName=VolumeSlider, Path=Value, StringFormat={}{0:n2}}" FontSize="24" FontWeight="SemiBold"/>
+                        <Slider Grid.Row="1" VerticalAlignment="Center" Grid.Column="1" x:Name="VolumeSlider" TickFrequency="1"  Value="{Binding Volume, Mode=TwoWay}" Minimum="0" Maximum="100"/>
+                    </StackPanel>
+                </Grid>
+                <Button VerticalAlignment="Bottom" Style="{StaticResource HomeButton}" Grid.Row="2" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.HomeButtonClicked}">
+                    <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.HomeImagePath}"/>
+                </Button>
             </Grid>
         </Grid>
     </Border>

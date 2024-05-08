@@ -4,6 +4,8 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
 
 namespace CoinClicker
 {
@@ -23,6 +25,7 @@ namespace CoinClicker
         private TutorialWindow tutorialWindow;
         private TutorialWindowViewModel tutorialWindowViewModel;
         private Tutorial tutorial;
+
 
         public MainWindow()
         {
@@ -45,18 +48,17 @@ namespace CoinClicker
             mainWindowViewModel = new MainWindowViewModel(clickerLogic, stockWindow, tutorialWindow);
 
 
-
             DataContext = mainWindowViewModel;
 
             InitializeComponent();
 
             Cursor = new Cursor(Utility.CURSOR_PATH);
-            
+
             BadgeDisplay badgeDisplay = new BadgeDisplay(mainWindowViewModel);
             Grid.SetColumn(badgeDisplay, 0);
             Grid.SetRow(badgeDisplay, 1);
             displayGrid.Children.Add(badgeDisplay);
-            
+
             Display display = new Display(mainWindowViewModel);
             Grid.SetColumn(display, 0);
             Grid.SetRow(display, 1);
@@ -99,6 +101,30 @@ namespace CoinClicker
 
             Application.Current.Shutdown();
             base.OnClosing(e);
+        }
+
+        private void OptionBtn_click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as MainWindowViewModel).OptionMenuVisible = true;
+        }
+
+        private void FullscreenCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)FullscreenCheckBox.IsChecked)
+            {
+                WindowState = WindowState.Maximized;
+                WindowStyle = WindowStyle.None;
+            }
+            else
+            {
+                WindowState = WindowState.Normal;
+                WindowStyle = WindowStyle.SingleBorderWindow;
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

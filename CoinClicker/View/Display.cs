@@ -1,8 +1,10 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -16,7 +18,7 @@ namespace CoinClicker
         private float cointSizeScale = 2f;
         private float defaultCoinSizeScale = 2f;
         private float mouseDownScale = 0.95f;
-        
+
         private int baseCoinSize = 100;
         
         private int subCoinLifeTimeInFrame = 100;

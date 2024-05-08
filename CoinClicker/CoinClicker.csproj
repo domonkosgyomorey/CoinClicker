@@ -18,8 +18,10 @@
   </ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Accord.Math" Version="3.8.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
@@ -40,6 +42,15 @@
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Resources\Cursor\point_cursor_emerald.cur">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Music\01BadAppleHardcoreRemix.mp3">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Music\02BadApple.mp3">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Music\03WellermanSeaShanty.mp3">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Resources\Save\player.json">

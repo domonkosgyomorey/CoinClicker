@@ -6,6 +6,7 @@ namespace CoinClicker
     {
         public static Random random = new Random(123);
         public static string RESOURCE_PATH = Path.GetFullPath(Environment.CurrentDirectory + "\\Resources");
+        public static string MUSIC_PATH = Path.GetFullPath(RESOURCE_PATH + "\\Music");
         public static string CURSOR_PATH = Path.GetFullPath(RESOURCE_PATH + "\\Cursor\\point_cursor_emerald.cur");
         public static string UPGRADE_PATH = Path.GetFullPath(RESOURCE_PATH + "\\Upgrade");
         public static string DEFAULT_UPGRADE_PATH = Path.GetFullPath(UPGRADE_PATH + "\\default.png");

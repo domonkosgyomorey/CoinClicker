@@ -11,6 +11,9 @@ namespace CoinClicker
         private bool menuVisible = true;
         private StockWindow stockWindow;
         private TutorialWindow tutorialWindow;
+        private MyMusicPlayer myMusicPlayer;
+
+        private bool hasBeat;
 
         public string BackgroundPath { get; set; }
         public string CoinIconPath { get; set; }
@@ -20,6 +23,13 @@ namespace CoinClicker
         public ICommand HomeButtonClicked { get; set; }
 
         public IClickerLogic ClickerLogic { get; private set; }
+
+        private float volume;
+
+        public float Volume { get => volume; set { 
+                volume = value;
+                myMusicPlayer?.SetVolume(value/100f);
+            } }
 
 
         public MainWindowViewModel(IClickerLogic clickerLogic, StockWindow stockWindow, TutorialWindow tutorialWindow)
@@ -37,6 +47,9 @@ namespace CoinClicker
             ClickerLogic.OnCloseStockWindow += HideStockWindow;
             ClickerLogic.OnOpenTutorial += OpenTutorialWindow;
             ClickerLogic.OnCloseTutorial += HideTutorialWindow;
+
+            myMusicPlayer = new MyMusicPlayer(Utility.MUSIC_PATH);
+            Volume = 50;
         }
 
         public bool OptionMenuVisible
@@ -80,6 +93,9 @@ namespace CoinClicker
                     }
             }
         }
+
+        public bool HasBeat { get => hasBeat; set => hasBeat = value; }
+        public MyMusicPlayer MyMusicPlayer { get => myMusicPlayer; set => myMusicPlayer = value; }
 
         public void OpenStockWindow()
         {

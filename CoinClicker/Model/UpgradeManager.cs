@@ -28,6 +28,11 @@ namespace CoinClicker
             return fullUpgrades.Select(x => x.Upgrade).ToList();
         }
 
+        public List<BitmapImage> GetImages()
+        {
+            return fullUpgrades.Select(x => x.Image).ToList();
+        }
+
         public List<FullUpgrade> GetFullUpgrade()
         {
             return fullUpgrades;
