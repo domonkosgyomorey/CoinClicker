@@ -7,7 +7,8 @@ The game is very unbalanced and contains a temporarly upgrade for debug puprose.
 ![](Previews/screenshot2.png)
 
 # Download
-![For windows x86-64](https://github.com/domonkosgyomorey/CoinClicker/releases/tag/1.0)
+For windows x86-64
+![](https://github.com/domonkosgyomorey/CoinClicker/releases/tag/1.0)
 
 # Features
 - Auto clicker upgrades
