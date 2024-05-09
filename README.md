@@ -19,3 +19,6 @@ there are a few save fils in the Resources/Save folder.
 - In stock.jon we can modify and add new stocks into the game.
 - In upgrade.json we can also modify and add new upgrades into the game.
 - In tutorial.json we can create own tutorials if its needed for the MOD's.
+
+# Add custom music
+In Resources/Music folder where you can add custom music, with mp3 format.
