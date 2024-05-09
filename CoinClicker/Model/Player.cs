@@ -55,6 +55,8 @@ namespace CoinClicker
         private double bonusIncomeUpgradePriceMultiplier;
         private TUTORIAL_STATE tutorialState;
         private double tutorialUnlockPrice;
+        private bool keyboardUnlocked;
+        private double keyboardUnlockPrice;
 
         public double ClickPower { get => clickPower; set => SetProperty(ref clickPower, value); }
         public double Money { get => money; set => SetProperty(ref money, value); }
@@ -83,6 +85,8 @@ namespace CoinClicker
         public double BonusIncomeUpgradePriceMultiplier { get => bonusIncomeUpgradePriceMultiplier; set => SetProperty(ref bonusIncomeUpgradePriceMultiplier, value); }
         public TUTORIAL_STATE TutorialState { get => tutorialState; set => SetProperty(ref tutorialState, value); }
         public double TutorialUnlockPrice { get => tutorialUnlockPrice; set => SetProperty(ref tutorialUnlockPrice, value); }
+        public bool KeyboardUnlocked { get => keyboardUnlocked; set => SetProperty(ref keyboardUnlocked, value); }
+        public double KeyboardUnlockPrice { get => keyboardUnlockPrice; set => SetProperty(ref keyboardUnlockPrice, value); }
 
         public Player()
         {
@@ -112,6 +116,8 @@ namespace CoinClicker
             bonusIncomeUpgradePriceMultiplier = 100000;
             tutorialState = TUTORIAL_STATE.LOCKED;
             tutorialUnlockPrice = 1000;
+            keyboardUnlocked = false;
+            keyboardUnlockPrice = 1000000;
         }
     }
 }

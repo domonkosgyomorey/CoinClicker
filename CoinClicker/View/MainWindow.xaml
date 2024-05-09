@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Coin Clicker" Height="720" Width="1280" MinWidth="1280" MinHeight="720"
         WindowStyle="SingleBorderWindow"
-        Icon="{Binding CoinIconPath}">
+        Icon="{Binding CoinIconPath}" PreviewKeyDown="window_PreviewKeyDown" PreviewKeyUp="window_PreviewKeyUp">
     <Window.Resources>
         <local:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
         <local:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
@@ -16,6 +16,7 @@
         <local:CoinUpgradeEnumToIntConverter x:Key="CoinUpgradeEnumToIntConverter" />
         <local:StockUnlockStateToStringConverter x:Key="StockUnlockStateToStringConverter" />
         <local:TutorialStateToStringConverter x:Key="TutorialStateToStringConverter"/>
+        <local:KeyboardUnlockToStringConverter x:Key="KeyboardUnlockToStringConverter"/>
     </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="{Binding BackgroundPath}"/>
@@ -78,7 +79,7 @@
                         <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.HomeImagePath}"/>
                     </Button>
                 </Grid>
-                <ScrollViewer  VerticalScrollBarVisibility="Visible" Grid.Column="1" Foreground="White" DataContext="{Binding ClickerLogic}">
+                <ScrollViewer  VerticalScrollBarVisibility="Auto" Grid.Column="1" Foreground="White" DataContext="{Binding ClickerLogic}">
 
                     <StackPanel Grid.Column="1" DataContext="{Binding Player}">
                         <Border Style="{StaticResource UpgradeCardFrame}">
@@ -110,6 +111,14 @@ AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.BuyCoinUpgradeComma
                         </Border>
                         <Border Style="{StaticResource UpgradeCardFrame}">
                             <StackPanel  Margin="10">
+                                <Label Content="Keyboard click"  Style="{StaticResource DefaultFontColorAndFamily}" HorizontalContentAlignment="Center" FontSize="16" />
+                                <Label Content="{Binding KeyboardUnlockPrice, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}$" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16"/>
+                                <Button Style="{StaticResource UpgradeBuyBtnStyle}" Content="{Binding KeyboardUnlocked, Converter={StaticResource KeyboardUnlockToStringConverter}}" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.BuyKeyboardClickCommand}" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource UpgradeCardFrame}">
+                            <StackPanel  Margin="10">
                                 <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.StockImagePath}" />
                                 <Label Content="{Binding StockUnlockPrice, Converter={StaticResource DoubleToShortStringConverter}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat=" {0}$" HorizontalContentAlignment="Center" Style="{StaticResource DefaultFontColorAndFamily}" FontSize="16"/>
                                 <Button Style="{StaticResource UpgradeBuyBtnStyle}" Content="{Binding StockState, Converter={StaticResource StockUnlockStateToStringConverter}}" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
@@ -136,7 +145,7 @@ AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.BuyBonusIncomeUpgra
                         </Border>
                     </StackPanel>
                 </ScrollViewer>
-                <ScrollViewer  VerticalScrollBarVisibility="Visible" Grid.Column="2" Foreground="White" DataContext="{Binding ClickerLogic}">
+                <ScrollViewer  VerticalScrollBarVisibility="Auto" Grid.Column="2" Foreground="White" DataContext="{Binding ClickerLogic}">
                     <ItemsControl ItemsSource="{Binding FullUpgrades}" FontSize="16">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

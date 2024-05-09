@@ -35,6 +35,7 @@ namespace CoinClicker
         public ICommand StockViewUpgradeCommand { get; set; }
         public ICommand BuyBonusIncomeUpgradeCommand { get; set; }
         public ICommand TutorialUnlockCommand { get; set; }
+        public ICommand BuyKeyboardClickCommand { get; set; }
         public UpgradeManager UpgradeManager { get => upgradeManager; set => upgradeManager = value; }
         public List<FullUpgrade> FullUpgrades { get => UpgradeManager.GetFullUpgrade(); }
         public double LoadingBarPercentige { get; set; }
@@ -106,6 +107,10 @@ namespace CoinClicker
                 return Player.Money - Player.TutorialUnlockPrice >= 0;
             });
 
+            BuyKeyboardClickCommand = new RelayCommand(UnlockKeyboardClick, () => {
+                return Player.Money - Player.KeyboardUnlockPrice >= 0 && !Player.KeyboardUnlocked;
+            });
+
             DispatcherTimer incomeMeter = new DispatcherTimer();
             incomeMeter.Interval = TimeSpan.FromMilliseconds(incomeMeterPerMillis);
             incomeMeter.Tick += (o, e) =>
@@ -118,6 +123,7 @@ namespace CoinClicker
 
         }
 
+        
         public void Clicked()
         {
             double withUpgrades = Player.ClickPower * Player.IncreaseAllIncomeBy * (IsBonus ? Player.IncomeBonusMultiplier : 1);
@@ -177,6 +183,7 @@ namespace CoinClicker
             (StockViewUpgradeCommand as RelayCommand).NotifyCanExecuteChanged();
             (BuyBonusIncomeUpgradeCommand as RelayCommand).NotifyCanExecuteChanged();
             (TutorialUnlockCommand as RelayCommand).NotifyCanExecuteChanged();
+            (BuyKeyboardClickCommand as RelayCommand).NotifyCanExecuteChanged();
         }
 
         private void UpgradeClickPower()
@@ -290,5 +297,12 @@ namespace CoinClicker
                     break;
             }
         }
+
+        private void UnlockKeyboardClick()
+        {
+            Player.Money -= Player.KeyboardUnlockPrice;
+            Player.KeyboardUnlocked = true;
+        }
+
     }
 }

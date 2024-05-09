@@ -74,6 +74,11 @@ namespace CoinClicker
             CompositionTarget.Rendering += (o, e) => Loop();
         }
 
+        public void KeyDown() {
+            cointSizeScale *= mouseDownScale;
+            mainWindowViewModel.ClickerLogic.Clicked();
+        }
+
         private void Loop()
         {
             coinBound = new Rect(ActualWidth / 2 - baseCoinSize * cointSizeScale / 2, ActualHeight / 2 - baseCoinSize * cointSizeScale / 2, baseCoinSize * cointSizeScale, baseCoinSize * cointSizeScale);

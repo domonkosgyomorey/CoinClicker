@@ -16,6 +16,7 @@ namespace CoinClicker
         ICommand StockClickCommand { get; set; }
         ICommand StockViewUpgradeCommand { get; set; }
         ICommand TutorialUnlockCommand { get; set; }
+        ICommand BuyKeyboardClickCommand { get; set; }
         UpgradeManager UpgradeManager { get; set; }
 
         event ClickerLogic.ClickedDelegate OnClicked;

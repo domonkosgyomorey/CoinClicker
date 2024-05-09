@@ -26,6 +26,10 @@ namespace CoinClicker
         private TutorialWindowViewModel tutorialWindowViewModel;
         private Tutorial tutorial;
 
+        private Display display;
+
+        private bool wasKeyUp = true;
+
 
         public MainWindow()
         {
@@ -59,7 +63,7 @@ namespace CoinClicker
             Grid.SetRow(badgeDisplay, 1);
             displayGrid.Children.Add(badgeDisplay);
 
-            Display display = new Display(mainWindowViewModel);
+            display = new Display(mainWindowViewModel);
             Grid.SetColumn(display, 0);
             Grid.SetRow(display, 1);
             displayGrid.Children.Add(display);
@@ -122,9 +126,19 @@ namespace CoinClicker
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if(player.KeyboardUnlocked && wasKeyUp)
+            {
+                display.KeyDown();
+            }
+            e.Handled = true;
+            wasKeyUp = false;
+        }
 
+        private void window_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            wasKeyUp = true;
         }
     }
 }
