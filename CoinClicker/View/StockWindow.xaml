@@ -8,6 +8,7 @@
         Title="Stock" Height="500" Width="950" MinWidth="950" MinHeight="500"
         Background="Black"
         Icon="{Binding IconPath}"
+        ResizeMode="NoResize"
         Name="window">
     <Window.Resources>
         <local:DoubleToStringConverter x:Key="DoubleToStringConverter"/>

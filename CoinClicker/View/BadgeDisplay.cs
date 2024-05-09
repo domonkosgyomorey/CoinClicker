@@ -21,6 +21,8 @@ namespace CoinClicker
         private int upgradeBadgeFontSize = 12;
         private int upgradeBadgeFontOuterThick = 1;
 
+        private double time;
+
         public IClickerLogic ClickerLogic { get => mainWindowViewModel.ClickerLogic; }
 
         public BadgeDisplay(MainWindowViewModel mainWindowViewModel)
@@ -28,6 +30,8 @@ namespace CoinClicker
             this.mainWindowViewModel = mainWindowViewModel;
 
             ClickerLogic.OnUpgradeBuyed += InvalidateVisual;
+
+            CompositionTarget.Rendering += (o, e) => InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -42,6 +46,7 @@ namespace CoinClicker
             Brush oc = upgradeBadgeFontOuterBrush;
             int fontSize = upgradeBadgeFontSize;
             int outerThick = upgradeBadgeFontOuterThick;
+
             for (int i = 0; i < ClickerLogic.FullUpgrades.Count; i++)
             {
                 int columnIndex = (int)(i / (double)maxUpgradeBadgePerColumn);

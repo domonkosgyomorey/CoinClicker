@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using System.Transactions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -37,7 +38,9 @@ namespace CoinClicker
         private SolidColorBrush loadingBarBrush;
         private SolidColorBrush loadingBarBGBrush;
 
-        MySoundPlayer autoClickSound;
+        private MySoundPlayer autoClickSound;
+
+        private double time;
 
         public IClickerLogic ClickerLogic { get => mainWindowViewModel.ClickerLogic; }
 
@@ -98,14 +101,16 @@ namespace CoinClicker
             if (ClickerLogic.IsBonus)
             {
                 animatedBonusDrawing.StartAnimation();
-                animatedBonusDrawing.DrawText(drawingContext, new Point(ActualWidth / 2, ActualHeight / 2 - 200), ClickerLogic.Player.IncomeBonusMultiplier + "x", Brushes.Gold, Brushes.DarkOrange);
+                animatedBonusDrawing.DrawText(drawingContext, new Point(ActualWidth / 2, ActualHeight/2f-baseCoinSize*2), ClickerLogic.Player.IncomeBonusMultiplier + "x", Brushes.Gold, Brushes.DarkOrange);
             }
             else
             {
                 animatedBonusDrawing.EndAnimation();
             }
 
+            drawingContext.PushTransform(new RotateTransform(TimeToRotTransform(time++), coinBound.X+ coinBound.Width/2f, coinBound.Y + coinBound.Height / 2f));
             drawingContext.DrawRectangle(coinBrushes[(int)ClickerLogic.Player.CoinLevel], null, coinBound);
+            drawingContext.Pop();
 
             ParticleSystemDrawer.DrawDouble(upgradeAnimation, drawingContext, false);
 
@@ -145,6 +150,10 @@ namespace CoinClicker
             cointSizeScale *= mouseDownScale;
 
             mainWindowViewModel.ClickerLogic.Clicked();
+        }
+
+        private double TimeToRotTransform(double time) {
+            return 10*Math.Sin(time/30);
         }
     }
 }

@@ -50,6 +50,7 @@ namespace CoinClicker
 
             myMusicPlayer = new MyMusicPlayer(Utility.MUSIC_PATH);
             Volume = 50;
+            myMusicPlayer.Play();
         }
 
         public bool OptionMenuVisible

@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CoinClicker"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Title="Tutorial" Height="450" Width="800">
     <Window.Background>
-        <SolidColorBrush Color="BurlyWood"/>
+        <SolidColorBrush Color="DimGray"/>
     </Window.Background>
     <Grid DataContext="{Binding Tutorial}">
         <Grid.RowDefinitions>

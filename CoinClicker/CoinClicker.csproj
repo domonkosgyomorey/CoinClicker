@@ -48,7 +48,7 @@
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Resources\Music\02BadApple.mp3">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Resources\Music\03WellermanSeaShanty.mp3">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>

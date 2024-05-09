@@ -1,66 +1,58 @@
-﻿using CoinClicker.Utils;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup;
 
 namespace CoinClicker
 {
     public class MyMusicPlayer
     {
 
-        private IList<AudioFileReader> audioFiles;
-        private WaveOutEvent outputDevice;
-        private RealTimeMusicAnalyzer musicAnalyzer;
+        private List<string> musicList;
+        private int currentIndex;
+        private string musicFolder;
+        private IWavePlayer waveOutDevice;
+        private AudioFileReader audioFileReader;
 
-        public RealTimeMusicAnalyzer MusicAnalyzer { get => musicAnalyzer; set => musicAnalyzer = value; }
-
-        public MyMusicPlayer(IList<string> links) {
-            audioFiles = new List<AudioFileReader>();
-            foreach (var link in links) { 
-                audioFiles.Add(new AudioFileReader(link));
-            }
-            Init();
-        }
-
-        public MyMusicPlayer(string musicDirPath)
+        public MyMusicPlayer(string musicFolder)
         {
-            audioFiles = new List<AudioFileReader>();
-            foreach (var link in Directory.GetFiles(musicDirPath))
+            this.musicFolder = musicFolder;
+            musicList = LoadMusic();
+            currentIndex = 0;
+            waveOutDevice = new WaveOutEvent();
+            audioFileReader = new AudioFileReader(musicList[currentIndex]);
+        }
+
+        private List<string> LoadMusic()
+        {
+            List<string> musicList = new List<string>();
+            string[] files = Directory.GetFiles(musicFolder, "*.mp3");
+            musicList.AddRange(files);
+            return musicList;
+        }
+
+        public void Play()
+        {
+            if (musicList.Count == 0)
             {
-                audioFiles.Add(new AudioFileReader(link));
+                return;
             }
-            Init();
+
+            waveOutDevice.Init(audioFileReader);
+            waveOutDevice.PlaybackStopped += WaveOutDevice_PlaybackStopped;
+
+            waveOutDevice.Play();
         }
 
-        public void SetVolume(float value) { 
-            outputDevice.Volume = value;
+        public void SetVolume(float value) {
+            waveOutDevice.Volume = value;
         }
 
-        public void GetFreq() { 
+        private void WaveOutDevice_PlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            currentIndex = (currentIndex + 1) % musicList.Count;
+            audioFileReader = new AudioFileReader(musicList[currentIndex]);
+            waveOutDevice.Init(audioFileReader);
+            waveOutDevice.Play();
         }
-
-        private void Init() {
-
-            //musicAnalyzer = new RealTimeMusicAnalyzer();
-            //musicAnalyzer.DominantFrequencyChanged += MusicAnalyzer_DominantFrequencyChanged;
-
-            outputDevice = new WaveOutEvent();
-            if (audioFiles.Count > 0)
-                outputDevice.Init(audioFiles.First());
-            outputDevice.Play();
-        }
-
-        //private void MusicAnalyzer_DominantFrequencyChanged(object sender, double frequency)
-        //{
-        //    if (outputDevice != null)
-        //    {
-        //        outputDevice.Volume = frequency > 100 ? 0.5f * 0.5f : 0.5f;
-        //    }
-        //}
     }
 }
