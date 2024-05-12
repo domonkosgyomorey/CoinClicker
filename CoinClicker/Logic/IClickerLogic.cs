@@ -39,7 +39,6 @@ namespace CoinClicker
         public event ChestSpawned OnChestSpawned;
         public event EnemySpawned OnEnemySpawned;
 
-
         public void Clicked();
         public void Clicked(List<double> value, List<int> times);
         public void LoadUpgrades(List<Upgrade> upgrades);

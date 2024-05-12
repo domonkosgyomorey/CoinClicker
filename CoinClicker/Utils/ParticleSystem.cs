@@ -7,21 +7,23 @@ namespace CoinClicker
         public List<Particle<T>> Particles { get; set; }
         public int Lives { get; set; }
         private Stack<int> removableIndices;
+        private float speedMulitplier;
 
-        public ParticleSystem(int lives)
+        public ParticleSystem(int lives, float speedMulitplier)
         {
             Particles = new();
             removableIndices = new();
 
             Lives = lives;
+            this.speedMulitplier = speedMulitplier;
         }
 
-        public void AddInstance(T obj, Vector2 position, Particle<T>.MovementType type)
+        public void AddInstance(T obj, Vector2 position,Particle<T>.MovementType type)
         {
-            Particles.Add(new Particle<T>(obj, Lives, position, type));
+            Particles.Add(new Particle<T>(obj, Lives, position, type, speedMulitplier));
         }
 
-        public void Update()
+        public void Update(float delteTime)
         {
             for (int i = 0; i < Particles.Count; i++)
             {
@@ -32,7 +34,7 @@ namespace CoinClicker
                 }
                 else
                 {
-                    particle.Update();
+                    particle.Update(delteTime);
                 }
             }
 
