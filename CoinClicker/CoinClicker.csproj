@@ -46,6 +46,9 @@
 	  <None Update="Resources\Cursor\point_cursor_emerald.cur">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Resources\enemy.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Resources\Music\01BadAppleHardcoreRemix.mp3">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>

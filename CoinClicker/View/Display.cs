@@ -1,9 +1,9 @@
 ﻿using System.Numerics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace CoinClicker
 {
@@ -46,7 +46,17 @@ namespace CoinClicker
 
         private double time;
 
-        public IClickerLogic ClickerLogic { get => mainWindowViewModel.ClickerLogic; }
+        private IClickerLogic ClickerLogic { get => mainWindowViewModel.ClickerLogic; }
+
+        private ImageBrush enemyBrush;
+        private EnemyManager enemyManager;
+        private ParticleSystem<double> enemiesStealCoinAnimation;
+        private int enemyWidth = 35;
+        private int enemyHeight = 40;
+        private int enemyLives = 125;
+
+        private ParticleSystem<object> explosion;
+        private int explosionFragmentCount = 20;
 
         public Display(MainWindowViewModel mainWindowViewModel)
         {
@@ -60,7 +70,7 @@ namespace CoinClicker
             };
 
             chestBrush = new ImageBrush(new BitmapImage(new Uri(Utility.TRESURE_CHEST_PATH)));
-            
+            enemyBrush = new ImageBrush(new BitmapImage(new Uri(Utility.ENEMY_PATH)));
 
             coinBound = new Rect(ActualWidth / 2 - baseCoinSize / 2 * cointSizeScale, ActualHeight / 2 - baseCoinSize / 2 * cointSizeScale, baseCoinSize, baseCoinSize);
             coinPosition = new Vector2((float)(coinBound.X + coinBound.Width / 2f), (float)(coinBound.Y + coinBound.Height / 2f));
@@ -70,19 +80,28 @@ namespace CoinClicker
             
             chestCoinAnimation = new ParticleSystem<double>(chestLives);
             chests = new(chestLives);
-            mainWindowViewModel.ClickerLogic.OnChestSpawned += () => {
+            ClickerLogic.OnChestSpawned += () => {
                 chests.AddInstance(0, new Vector2(Utility.random.Next(100, (int)ActualWidth - 100), Utility.random.Next(100, (int)ActualHeight - 100)), Particle<byte>.MovementType.STATIC); 
             };
 
             animatedBonusDrawing = new();
 
-            mainWindowViewModel.ClickerLogic.OnUpgradeClicked += OnUpgradeClicked;
-            mainWindowViewModel.ClickerLogic.OnClicked += OnPlayerClicked;
+            ClickerLogic.OnUpgradeClicked += OnUpgradeClicked;
+            ClickerLogic.OnClicked += OnPlayerClicked;
 
             autoClickSound = new MySoundPlayer(Utility.AUTO_CLICK_SOUND_PATH, 5);
 
             loadingBarBrush = new SolidColorBrush(Color.FromRgb(5, 153, 0));
             loadingBarBGBrush = new SolidColorBrush(Color.FromRgb(210, 180, 140));
+
+            enemiesStealCoinAnimation = new ParticleSystem<double>(subCoinLifeTimeInFrame);
+            enemyManager = new EnemyManager(enemyLives);
+            ClickerLogic.OnEnemySpawned += () => {
+                // Spawning at one of the window edge
+                enemyManager.AddEnemy(new Vector2(Utility.random.Next(0, 2)*(int)ActualWidth, Utility.random.Next(0, 2)*(int)ActualHeight));
+            };
+
+            explosion = new ParticleSystem<object>(50);
 
             CompositionTarget.Rendering += (o, e) => Loop();
         }
@@ -106,11 +125,32 @@ namespace CoinClicker
             upgradeAnimation.Update();
             chests.Update();
             chestCoinAnimation.Update();
+            explosion.Update();
+
+            for (int i = 0; i < enemyManager.Enemies.Count; i++)
+            {
+                Enemy enemy = enemyManager.Enemies[i];
+                if (enemy.Lives == 1)
+                {
+                    Explode(enemy.Position);
+                }
+                if (new Rect(enemy.Position.X, enemy.Position.Y, enemyWidth, enemyHeight).Contains(Mouse.GetPosition(this)))
+                {
+                    enemy.Lives = 0;
+                    enemiesStealCoinAnimation.AddInstance(-ClickerLogic.Player.Money * ClickerLogic.Player.EnemyStealMoneyPerc, enemy.Position, Particle<double>.MovementType.RADIAL);
+                    ClickerLogic.StealMoney(ClickerLogic.Player.Money * ClickerLogic.Player.EnemyStealMoneyPerc);
+
+                    Explode(enemy.Position);
+                }
+            }
+
+            enemyManager.Update(new Vector2((float)Mouse.GetPosition(this).X-enemyWidth/2f, (float)Mouse.GetPosition(this).Y-enemyHeight/2f));
+            enemiesStealCoinAnimation.Update();
 
             InvalidateVisual();
         }
 
-
+        
 
         protected override void OnRender(DrawingContext drawingContext)
         {
@@ -151,7 +191,15 @@ namespace CoinClicker
                 drawingContext.DrawRectangle(chestBrush, null, new Rect(chest.Position.X, chest.Position.Y, chestWidth, chestHeight));
             }
 
-            ParticleSystemDrawer.DrawDouble(chestCoinAnimation, drawingContext, 255, 26, 26);
+            foreach (var enemy in enemyManager.Enemies)
+            {
+                drawingContext.DrawRectangle(enemyBrush, null, new Rect(enemy.Position.X, enemy.Position.Y, enemyWidth, enemyHeight));
+            }
+
+            ParticleSystemDrawer.DrawDouble(chestCoinAnimation, drawingContext, 5, 153, 0);
+            ParticleSystemDrawer.DrawDouble(enemiesStealCoinAnimation, drawingContext, 255, 26, 26);
+            ParticleSystemDrawer.DrawPoints(explosion, 2, drawingContext, Color.FromRgb(255, 0, 0), Color.FromRgb(0, 0, 0));
+            
         }
 
         public void OnPlayerClicked(double value)
@@ -183,15 +231,22 @@ namespace CoinClicker
             {
                 if(new Rect(chests.Particles[i].Position.X, chests.Particles[i].Position.Y, chestWidth, chestHeight).Contains(e.GetPosition(this))) {
                     chests.Particles[i].Lives = 0;
-                    chestCoinAnimation.AddInstance(mainWindowViewModel.ClickerLogic.Player.Money*0.1, chests.Particles[i].Position, Particle<double>.MovementType.RADIAL);
-                    mainWindowViewModel.ClickerLogic.Player.Money += mainWindowViewModel.ClickerLogic.Player.Money * 0.1;
+                    chestCoinAnimation.AddInstance(ClickerLogic.Player.Money*0.1, chests.Particles[i].Position, Particle<double>.MovementType.RADIAL);
+                    ClickerLogic.AddMoney(ClickerLogic.Player.Money * 0.1);
                 }
             }
-
         }
 
         private double TimeToRotTransform(double time) {
             return 10*Math.Sin(time/30);
+        }
+
+        private void Explode(Vector2 pos)
+        {
+            for (int j = 0; j < explosionFragmentCount; j++)
+            {
+                explosion.AddInstance(0, pos, Particle<object>.MovementType.RADIAL);
+            }
         }
     }
 }

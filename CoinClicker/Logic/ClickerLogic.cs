@@ -1,6 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
 using System.IO;
-using System.Numerics;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -40,6 +39,7 @@ namespace CoinClicker
         public event IClickerLogic.UpgradeBuyed OnUpgradeBuyed;
         public event IClickerLogic.UpgradeClickDelegete OnUpgradeClicked;
         public event IClickerLogic.ChestSpawned OnChestSpawned;
+        public event IClickerLogic.EnemySpawned OnEnemySpawned;
 
         public Player Player { get; }
         public LoadingBarTimeManager LoadingBarTimeManager { get => loadingBarTimeManager; set => loadingBarTimeManager = value; }
@@ -121,6 +121,22 @@ namespace CoinClicker
                 chestTimer.Interval = TimeSpan.FromMilliseconds(Utility.random.Next(player.MinTimeChestSpawn, player.MaxTimeChestSpawn));
             };
             chestTimer.Start();
+
+            DispatcherTimer enemyTimer = new DispatcherTimer();
+            enemyTimer.Interval = TimeSpan.FromMilliseconds(Utility.random.Next(player.MinTimeEnemySpawn, player.MaxTimeEnemySpawn));
+            enemyTimer.Tick += (o, e) => {
+                OnEnemySpawned?.Invoke();
+                enemyTimer.Interval = TimeSpan.FromMilliseconds(Utility.random.Next(player.MinTimeEnemySpawn, player.MaxTimeEnemySpawn));
+            };
+            enemyTimer.Start();
+        }
+
+        public void AddMoney(double amount) {
+            Player.Money += amount;
+        }
+
+        public void StealMoney(double amount) { 
+            Player.Money -= amount;
         }
 
         

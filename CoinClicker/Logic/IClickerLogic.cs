@@ -27,6 +27,7 @@ namespace CoinClicker
         public delegate void CloseTutorialDelegate();
         public delegate void UpgradeBuyed();
         public delegate void ChestSpawned();
+        public delegate void EnemySpawned();
 
         public event ClickedDelegate OnClicked;
         public event CloseStockWindowDelegate OnCloseStockWindow;
@@ -36,10 +37,13 @@ namespace CoinClicker
         public event UpgradeBuyed OnUpgradeBuyed;
         public event UpgradeClickDelegete OnUpgradeClicked;
         public event ChestSpawned OnChestSpawned;
+        public event EnemySpawned OnEnemySpawned;
 
 
-        void Clicked();
-        void Clicked(List<double> value, List<int> times);
-        void LoadUpgrades(List<Upgrade> upgrades);
+        public void Clicked();
+        public void Clicked(List<double> value, List<int> times);
+        public void LoadUpgrades(List<Upgrade> upgrades);
+        public void AddMoney(double amount);
+        public void StealMoney(double amount);
     }
 }

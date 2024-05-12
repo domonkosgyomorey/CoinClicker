@@ -60,6 +60,9 @@ namespace CoinClicker
         private int minTimeChestSpawn;
         private int maxTimeChestSpawn;
         private double chestMoneyPerc;
+        private int minTimeEnemySpawn;
+        private int maxTimeEnemySpawn;
+        private double enemyStealMoneyPerc;
 
         public double ClickPower { get => clickPower; set => SetProperty(ref clickPower, value); }
         public double Money { get => money; set => SetProperty(ref money, value); }
@@ -93,40 +96,61 @@ namespace CoinClicker
         public int MinTimeChestSpawn { get => minTimeChestSpawn; set => SetProperty(ref minTimeChestSpawn, value); }
         public int MaxTimeChestSpawn { get => maxTimeChestSpawn; set => SetProperty(ref maxTimeChestSpawn, value); }
         public double ChestMoneyPerc { get => chestMoneyPerc; set => SetProperty(ref chestMoneyPerc, value); }
+        public int MinTimeEnemySpawn { get => minTimeEnemySpawn; set => SetProperty(ref minTimeEnemySpawn, value); }
+        public int MaxTimeEnemySpawn { get => maxTimeEnemySpawn; set => SetProperty(ref maxTimeEnemySpawn, value); }
+        public double EnemyStealMoneyPerc { get => enemyStealMoneyPerc; set => SetProperty(ref enemyStealMoneyPerc, value); }
 
         public Player()
         {
             money = 0;
+            
             clickPower = 1;
             clickPowerUpgradeMultiplier = 2;
             clickPowerUpgradePrice = 100;
             clickPowerUpgradePriceMultiplier = 10;
+            
             coinLevel = COIN_LEVEL.BRONZE;
             coinUpgradePrice = 5000;
             coinUpgradePriceMultiplier = 100;
+            
             increaseAllIncomeBy = 1.0;
             increaseAllIncomeByIncrease = 0.5;
+            
             stockState = STOCK_STATE.LOCKED;
+            
             stockUnlockPrice = 1000000;
             stockHistMemory = 100;
             stockMillisUntilNewUpdate = 100;
+            
             stockChartUpgradePrice = 100000000;
             stockChartUpgradePriceMultiplier = 1000;
+            
             stockHistMemoryMultiplier = 1.5;
+            
             loadingBarTimeInSeconds = 60;
             loadingBarUpdateInMillis = 20;
+            
             bonusInSeconds = 5;
+            
             incomeBonusMultiplier = 5;
             incomeBonusUpgradeMultiplier = 1.5;
+            
             bonusIncomeUpgradePrice = 1000000;
             bonusIncomeUpgradePriceMultiplier = 100000;
+            
             tutorialState = TUTORIAL_STATE.LOCKED;
             tutorialUnlockPrice = 1000;
+            
             keyboardUnlocked = false;
             keyboardUnlockPrice = 1000000;
+
             minTimeChestSpawn = 5000;
             maxTimeChestSpawn = 30000;
             chestMoneyPerc = 0.1;
+
+            minTimeEnemySpawn = 5000;
+            maxTimeEnemySpawn = 20000;
+            enemyStealMoneyPerc = 0.5;
         }
     }
 }
