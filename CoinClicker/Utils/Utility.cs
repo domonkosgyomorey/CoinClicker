@@ -25,6 +25,7 @@ namespace CoinClicker
         public static string UPGRADE_IMAGES_SAVE_DATA = Path.GetFullPath(SAVE_PATH + "\\upgradeImages.json");
         public static string UPGRADE_TIMERS_SAVE_DATA = Path.GetFullPath(SAVE_PATH + "\\upgradeTimers.json");
         public static string TUTORIAL_CONTENT_SAVE_DATA = Path.GetFullPath(SAVE_PATH + "\\tutorial.json");
+        public static string TRESURE_CHEST_PATH = Path.GetFullPath(RESOURCE_PATH + "\\chest.png");
 
         public static double MAX_STOCK_BUY_VAL = 1E+20;
         public static double MIN_STOCK_BUY_VAL = -1E+20;

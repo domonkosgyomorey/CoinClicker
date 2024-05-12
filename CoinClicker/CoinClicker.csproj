@@ -28,6 +28,9 @@
 	  <None Update="Resources\Background\background.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Resources\chest.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Resources\Coin\bronze.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>

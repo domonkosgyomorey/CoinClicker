@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
-using System.Transactions;
+﻿using System.Numerics;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -32,6 +28,7 @@ namespace CoinClicker
         private ParticleSystem<double> coinClickAnimation;
         private ParticleSystem<double> upgradeAnimation;
 
+
         private AnimatedTextDrawer animatedBonusDrawing;
 
         private MainWindowViewModel mainWindowViewModel;
@@ -39,6 +36,13 @@ namespace CoinClicker
         private SolidColorBrush loadingBarBGBrush;
 
         private MySoundPlayer autoClickSound;
+
+        private ImageBrush chestBrush;
+        private ParticleSystem<double> chestCoinAnimation;
+        private ParticleSystem<byte> chests;
+        private int chestWidth = 50;
+        private int chestHeight = 50;
+        private int chestLives = 150;
 
         private double time;
 
@@ -55,11 +59,23 @@ namespace CoinClicker
                 new ImageBrush(new BitmapImage(new Uri(Utility.COIN_PATH + "\\ruby.png"))),
             };
 
+            chestBrush = new ImageBrush(new BitmapImage(new Uri(Utility.TRESURE_CHEST_PATH)));
+            DispatcherTimer chestTimer = new DispatcherTimer();
+            Player player = mainWindowViewModel.ClickerLogic.Player;
+            chests = new ParticleSystem<byte>(chestLives);
+            chestTimer.Interval = TimeSpan.FromMilliseconds(Utility.random.Next(player.MinTimeChestSpawn, player.MaxTimeChestSpawn));
+            chestTimer.Tick += (o, e) => {
+                chests.AddInstance(0, new Vector2(Utility.random.Next(100, (int)ActualWidth)-100, Utility.random.Next(100, (int)ActualHeight-100)), Particle<byte>.MovementType.STATIC); 
+                chestTimer.Interval = TimeSpan.FromMilliseconds(Utility.random.Next(player.MinTimeChestSpawn, player.MaxTimeChestSpawn));
+            };
+            chestTimer.Start();
+
             coinBound = new Rect(ActualWidth / 2 - baseCoinSize / 2 * cointSizeScale, ActualHeight / 2 - baseCoinSize / 2 * cointSizeScale, baseCoinSize, baseCoinSize);
             coinPosition = new Vector2((float)(coinBound.X + coinBound.Width / 2f), (float)(coinBound.Y + coinBound.Height / 2f));
 
-            coinClickAnimation = new ParticleSystem<double>(coinPosition, subCoinLifeTimeInFrame);
-            upgradeAnimation = new ParticleSystem<double>(coinPosition, upgradesLifeTimeInFrame);
+            coinClickAnimation = new ParticleSystem<double>(subCoinLifeTimeInFrame);
+            upgradeAnimation = new ParticleSystem<double>(upgradesLifeTimeInFrame);
+            chestCoinAnimation = new ParticleSystem<double>(chestLives);
 
             animatedBonusDrawing = new();
 
@@ -83,8 +99,6 @@ namespace CoinClicker
         {
             coinBound = new Rect(ActualWidth / 2 - baseCoinSize * cointSizeScale / 2, ActualHeight / 2 - baseCoinSize * cointSizeScale / 2, baseCoinSize * cointSizeScale, baseCoinSize * cointSizeScale);
             coinPosition = new Vector2((float)(coinBound.X + coinBound.Width / 2f), (float)(coinBound.Y + coinBound.Height / 2f));
-            coinClickAnimation.StartPosition = coinPosition;
-            upgradeAnimation.StartPosition = coinPosition;
 
             if (Mouse.LeftButton == MouseButtonState.Released)
             {
@@ -93,6 +107,8 @@ namespace CoinClicker
 
             coinClickAnimation.Update();
             upgradeAnimation.Update();
+            chests.Update();
+            chestCoinAnimation.Update();
 
             InvalidateVisual();
         }
@@ -117,9 +133,10 @@ namespace CoinClicker
             drawingContext.DrawRectangle(coinBrushes[(int)ClickerLogic.Player.CoinLevel], null, coinBound);
             drawingContext.Pop();
 
-            ParticleSystemDrawer.DrawDouble(upgradeAnimation, drawingContext, false);
 
-            ParticleSystemDrawer.DrawDouble(coinClickAnimation, drawingContext, true);
+            ParticleSystemDrawer.DrawDouble(upgradeAnimation, drawingContext, 5, 153, 0);
+
+            ParticleSystemDrawer.DrawDouble(coinClickAnimation, drawingContext, 255, 255, 255);
 
             double barOffset = 52;
 
@@ -130,11 +147,19 @@ namespace CoinClicker
 
             drawingContext.DrawRoundedRectangle(null, outerPen, new Rect(barOffset - 5, ActualHeight - barOffset - 5, (ActualWidth - barOffset * 2 + 9), 11), 5, 5);
             drawingContext.DrawLine(loadPen, new Point(barOffset, ActualHeight-barOffset), new Point((ActualWidth - barOffset * 2) * ClickerLogic.LoadingBarPercentige + barOffset, ActualHeight - barOffset));
+
+            foreach (var chest in chests.Particles)
+            {
+                chestBrush.Opacity = 2*chest.Lives/(float)chests.Lives;
+                drawingContext.DrawRectangle(chestBrush, null, new Rect(chest.Position.X, chest.Position.Y, chestWidth, chestHeight));
+            }
+
+            ParticleSystemDrawer.DrawDouble(chestCoinAnimation, drawingContext, 255, 26, 26);
         }
 
         public void OnPlayerClicked(double value)
         {
-            coinClickAnimation.AddInstance(value, true);
+            coinClickAnimation.AddInstance(value, coinPosition, Particle<double>.MovementType.RADIAL);
         }
 
         public void OnUpgradeClicked(IEnumerable<double> values, IEnumerable<int> times)
@@ -144,7 +169,7 @@ namespace CoinClicker
 
             for (int i = 0; i < values.Count(); i++)
             {
-                upgradeAnimation.AddInstance(values.ElementAt(i) * times.ElementAt(i), true);
+                upgradeAnimation.AddInstance(values.ElementAt(i) * times.ElementAt(i), coinPosition, Particle<double>.MovementType.RADIAL);
             }
         }
 
@@ -152,9 +177,20 @@ namespace CoinClicker
         {
             base.OnMouseLeftButtonDown(e);
 
-            cointSizeScale *= mouseDownScale;
+            if (coinBound.Contains(e.GetPosition(this))){
+                cointSizeScale *= mouseDownScale;
+                mainWindowViewModel.ClickerLogic.Clicked();
+            }
 
-            mainWindowViewModel.ClickerLogic.Clicked();
+            for(int i = 0; i < chests.Particles.Count; i++)
+            {
+                if(new Rect(chests.Particles[i].Position.X, chests.Particles[i].Position.Y, chestWidth, chestHeight).Contains(e.GetPosition(this))) {
+                    chests.Particles[i].Lives = 0;
+                    chestCoinAnimation.AddInstance(mainWindowViewModel.ClickerLogic.Player.Money*0.1, chests.Particles[i].Position, Particle<double>.MovementType.RADIAL);
+                    mainWindowViewModel.ClickerLogic.Player.Money += mainWindowViewModel.ClickerLogic.Player.Money * 0.1;
+                }
+            }
+
         }
 
         private double TimeToRotTransform(double time) {

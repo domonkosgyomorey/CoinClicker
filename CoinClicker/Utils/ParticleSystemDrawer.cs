@@ -9,7 +9,7 @@ namespace CoinClicker
     public class ParticleSystemDrawer
     {
 
-        public static void DrawDouble(ParticleSystem<double> particleSystem, DrawingContext drawingContext, bool isUserClick)
+        public static void DrawDouble(ParticleSystem<double> particleSystem, DrawingContext drawingContext, int r, int g, int b)
         {
             if (particleSystem.Particles.Count == 0) return;
             FormattedText str;
@@ -17,7 +17,6 @@ namespace CoinClicker
             foreach (var particle in particleSystem.Particles)
             {
                 str = FromString(DoubleFormatter.FormatShort(particle.Item));
-                (int r, int g, int b) = isUserClick ? (255, 255, 255) : (5, 153, 0);
                 str.SetForegroundBrush(new SolidColorBrush(Color.FromArgb((byte)((particle.Lives / (float)particleSystem.Lives) * 255f), (byte)r, (byte)g, (byte)b)));
                 pen = new Pen(new SolidColorBrush(Color.FromArgb((byte)((particle.Lives / (float)particleSystem.Lives) * 255f), 0, 0, 0)), 2);
                 Point pos = new Point(particle.Position.X, particle.Position.Y);

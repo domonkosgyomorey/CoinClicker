@@ -5,22 +5,20 @@ namespace CoinClicker
     public class ParticleSystem<T>
     {
         public List<Particle<T>> Particles { get; set; }
-        public Vector2 StartPosition { get; set; }
         public int Lives { get; set; }
         private Stack<int> removableIndices;
 
-        public ParticleSystem(Vector2 startPosition, int lives)
+        public ParticleSystem(int lives)
         {
             Particles = new();
             removableIndices = new();
 
-            StartPosition = startPosition;
             Lives = lives;
         }
 
-        public void AddInstance(T obj, bool radialRandom)
+        public void AddInstance(T obj, Vector2 position, Particle<T>.MovementType type)
         {
-            Particles.Add(new Particle<T>(obj, Lives, StartPosition, radialRandom));
+            Particles.Add(new Particle<T>(obj, Lives, position, type));
         }
 
         public void Update()

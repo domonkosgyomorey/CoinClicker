@@ -57,6 +57,9 @@ namespace CoinClicker
         private double tutorialUnlockPrice;
         private bool keyboardUnlocked;
         private double keyboardUnlockPrice;
+        private int minTimeChestSpawn;
+        private int maxTimeChestSpawn;
+        private double chestMoneyPerc;
 
         public double ClickPower { get => clickPower; set => SetProperty(ref clickPower, value); }
         public double Money { get => money; set => SetProperty(ref money, value); }
@@ -87,6 +90,9 @@ namespace CoinClicker
         public double TutorialUnlockPrice { get => tutorialUnlockPrice; set => SetProperty(ref tutorialUnlockPrice, value); }
         public bool KeyboardUnlocked { get => keyboardUnlocked; set => SetProperty(ref keyboardUnlocked, value); }
         public double KeyboardUnlockPrice { get => keyboardUnlockPrice; set => SetProperty(ref keyboardUnlockPrice, value); }
+        public int MinTimeChestSpawn { get => minTimeChestSpawn; set => SetProperty(ref minTimeChestSpawn, value); }
+        public int MaxTimeChestSpawn { get => maxTimeChestSpawn; set => SetProperty(ref maxTimeChestSpawn, value); }
+        public double ChestMoneyPerc { get => chestMoneyPerc; set => SetProperty(ref chestMoneyPerc, value); }
 
         public Player()
         {
@@ -118,6 +124,9 @@ namespace CoinClicker
             tutorialUnlockPrice = 1000;
             keyboardUnlocked = false;
             keyboardUnlockPrice = 1000000;
+            minTimeChestSpawn = 5000;
+            maxTimeChestSpawn = 30000;
+            chestMoneyPerc = 0.1;
         }
     }
 }
