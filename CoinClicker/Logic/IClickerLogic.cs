@@ -19,13 +19,24 @@ namespace CoinClicker
         ICommand BuyKeyboardClickCommand { get; set; }
         UpgradeManager UpgradeManager { get; set; }
 
-        event ClickerLogic.ClickedDelegate OnClicked;
-        event ClickerLogic.CloseStockWindowDelegate OnCloseStockWindow;
-        event ClickerLogic.CloseTutorialDelegate OnCloseTutorial;
-        event ClickerLogic.OpenStockWindowDelegate OnOpenStockWindow;
-        event ClickerLogic.OpenTutorialDelegate OnOpenTutorial;
-        event ClickerLogic.UpgradeBuyed OnUpgradeBuyed;
-        event ClickerLogic.UpgradeClickDelegete OnUpgradeClicked;
+        public delegate void UpgradeClickDelegete(IEnumerable<double> value, IEnumerable<int> times);
+        public delegate void ClickedDelegate(double value);
+        public delegate void OpenStockWindowDelegate();
+        public delegate void CloseStockWindowDelegate();
+        public delegate void OpenTutorialDelegate();
+        public delegate void CloseTutorialDelegate();
+        public delegate void UpgradeBuyed();
+        public delegate void ChestSpawned();
+
+        public event ClickedDelegate OnClicked;
+        public event CloseStockWindowDelegate OnCloseStockWindow;
+        public event CloseTutorialDelegate OnCloseTutorial;
+        public event OpenStockWindowDelegate OnOpenStockWindow;
+        public event OpenTutorialDelegate OnOpenTutorial;
+        public event UpgradeBuyed OnUpgradeBuyed;
+        public event UpgradeClickDelegete OnUpgradeClicked;
+        public event ChestSpawned OnChestSpawned;
+
 
         void Clicked();
         void Clicked(List<double> value, List<int> times);

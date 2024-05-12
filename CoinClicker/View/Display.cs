@@ -60,22 +60,19 @@ namespace CoinClicker
             };
 
             chestBrush = new ImageBrush(new BitmapImage(new Uri(Utility.TRESURE_CHEST_PATH)));
-            DispatcherTimer chestTimer = new DispatcherTimer();
-            Player player = mainWindowViewModel.ClickerLogic.Player;
-            chests = new ParticleSystem<byte>(chestLives);
-            chestTimer.Interval = TimeSpan.FromMilliseconds(Utility.random.Next(player.MinTimeChestSpawn, player.MaxTimeChestSpawn));
-            chestTimer.Tick += (o, e) => {
-                chests.AddInstance(0, new Vector2(Utility.random.Next(100, (int)ActualWidth)-100, Utility.random.Next(100, (int)ActualHeight-100)), Particle<byte>.MovementType.STATIC); 
-                chestTimer.Interval = TimeSpan.FromMilliseconds(Utility.random.Next(player.MinTimeChestSpawn, player.MaxTimeChestSpawn));
-            };
-            chestTimer.Start();
+            
 
             coinBound = new Rect(ActualWidth / 2 - baseCoinSize / 2 * cointSizeScale, ActualHeight / 2 - baseCoinSize / 2 * cointSizeScale, baseCoinSize, baseCoinSize);
             coinPosition = new Vector2((float)(coinBound.X + coinBound.Width / 2f), (float)(coinBound.Y + coinBound.Height / 2f));
 
             coinClickAnimation = new ParticleSystem<double>(subCoinLifeTimeInFrame);
             upgradeAnimation = new ParticleSystem<double>(upgradesLifeTimeInFrame);
+            
             chestCoinAnimation = new ParticleSystem<double>(chestLives);
+            chests = new(chestLives);
+            mainWindowViewModel.ClickerLogic.OnChestSpawned += () => {
+                chests.AddInstance(0, new Vector2(Utility.random.Next(100, (int)ActualWidth - 100), Utility.random.Next(100, (int)ActualHeight - 100)), Particle<byte>.MovementType.STATIC); 
+            };
 
             animatedBonusDrawing = new();
 
@@ -90,7 +87,7 @@ namespace CoinClicker
             CompositionTarget.Rendering += (o, e) => Loop();
         }
 
-        public void KeyDown() {
+        public new void KeyDown() {
             cointSizeScale *= mouseDownScale;
             mainWindowViewModel.ClickerLogic.Clicked();
         }

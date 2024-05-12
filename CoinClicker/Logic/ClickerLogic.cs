@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
 using System.IO;
+using System.Numerics;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -11,22 +12,6 @@ namespace CoinClicker
 
         private UpgradeManager upgradeManager;
         private LoadingBarTimeManager loadingBarTimeManager;
-
-        public delegate void UpgradeClickDelegete(IEnumerable<double> value, IEnumerable<int> times);
-        public delegate void ClickedDelegate(double value);
-        public delegate void OpenStockWindowDelegate();
-        public delegate void CloseStockWindowDelegate();
-        public delegate void OpenTutorialDelegate();
-        public delegate void CloseTutorialDelegate();
-        public delegate void UpgradeBuyed();
-
-        public event ClickedDelegate OnClicked;
-        public event UpgradeClickDelegete OnUpgradeClicked;
-        public event OpenStockWindowDelegate OnOpenStockWindow;
-        public event CloseStockWindowDelegate OnCloseStockWindow;
-        public event OpenTutorialDelegate OnOpenTutorial;
-        public event CloseTutorialDelegate OnCloseTutorial;
-        public event UpgradeBuyed OnUpgradeBuyed;
 
         public ICommand BuyUpgradeCommand { get; set; }
         public ICommand BuyClickUpgradeCommand { get; set; }
@@ -46,6 +31,15 @@ namespace CoinClicker
         private Timer bonusTimer;
         private int incomeMeterPerMillis = 1000;
         private double prevMoney;
+
+        public event IClickerLogic.ClickedDelegate OnClicked;
+        public event IClickerLogic.CloseStockWindowDelegate OnCloseStockWindow;
+        public event IClickerLogic.CloseTutorialDelegate OnCloseTutorial;
+        public event IClickerLogic.OpenStockWindowDelegate OnOpenStockWindow;
+        public event IClickerLogic.OpenTutorialDelegate OnOpenTutorial;
+        public event IClickerLogic.UpgradeBuyed OnUpgradeBuyed;
+        public event IClickerLogic.UpgradeClickDelegete OnUpgradeClicked;
+        public event IClickerLogic.ChestSpawned OnChestSpawned;
 
         public Player Player { get; }
         public LoadingBarTimeManager LoadingBarTimeManager { get => loadingBarTimeManager; set => loadingBarTimeManager = value; }
@@ -120,7 +114,13 @@ namespace CoinClicker
             };
             incomeMeter.Start();
 
-
+            DispatcherTimer chestTimer = new DispatcherTimer();
+            chestTimer.Interval = TimeSpan.FromMilliseconds(Utility.random.Next(player.MinTimeChestSpawn, player.MaxTimeChestSpawn));
+            chestTimer.Tick += (o, e) => {
+                OnChestSpawned?.Invoke();
+                chestTimer.Interval = TimeSpan.FromMilliseconds(Utility.random.Next(player.MinTimeChestSpawn, player.MaxTimeChestSpawn));
+            };
+            chestTimer.Start();
         }
 
         

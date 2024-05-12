@@ -13,8 +13,6 @@ namespace CoinClicker
         private TutorialWindow tutorialWindow;
         private MyMusicPlayer myMusicPlayer;
 
-        private bool hasBeat;
-
         public string BackgroundPath { get; set; }
         public string CoinIconPath { get; set; }
         public string StockImagePath { get; set; }
@@ -95,8 +93,6 @@ namespace CoinClicker
             }
         }
 
-        public bool HasBeat { get => hasBeat; set => hasBeat = value; }
-        public MyMusicPlayer MyMusicPlayer { get => myMusicPlayer; set => myMusicPlayer = value; }
 
         public void OpenStockWindow()
         {
