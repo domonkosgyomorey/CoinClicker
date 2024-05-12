@@ -73,6 +73,9 @@
 	  <None Update="Resources\Sound\click.wav">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Resources\Sound\explosion.mp3">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Resources\Upgrade\bulldozer.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>

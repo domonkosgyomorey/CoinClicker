@@ -57,6 +57,7 @@ namespace CoinClicker
 
         private ParticleSystem<object> explosion;
         private int explosionFragmentCount = 20;
+        private MySoundPlayer explosionSound;
 
         public Display(MainWindowViewModel mainWindowViewModel)
         {
@@ -100,7 +101,7 @@ namespace CoinClicker
                 // Spawning at one of the window edge
                 enemyManager.AddEnemy(new Vector2(Utility.random.Next(0, 2)*(int)ActualWidth, Utility.random.Next(0, 2)*(int)ActualHeight));
             };
-
+            explosionSound = new MySoundPlayer(Utility.EXPLOSION_SOUND, 10);
             explosion = new ParticleSystem<object>(50);
 
             CompositionTarget.Rendering += (o, e) => Loop();
@@ -132,7 +133,7 @@ namespace CoinClicker
                 Enemy enemy = enemyManager.Enemies[i];
                 if (enemy.Lives == 1)
                 {
-                    Explode(enemy.Position);
+                    Explode(enemy.Position+new Vector2(enemyWidth/2f, enemyHeight/2f));
                 }
                 if (new Rect(enemy.Position.X, enemy.Position.Y, enemyWidth, enemyHeight).Contains(Mouse.GetPosition(this)))
                 {
@@ -140,7 +141,7 @@ namespace CoinClicker
                     enemiesStealCoinAnimation.AddInstance(-ClickerLogic.Player.Money * ClickerLogic.Player.EnemyStealMoneyPerc, enemy.Position, Particle<double>.MovementType.RADIAL);
                     ClickerLogic.StealMoney(ClickerLogic.Player.Money * ClickerLogic.Player.EnemyStealMoneyPerc);
 
-                    Explode(enemy.Position);
+                    Explode(enemy.Position + new Vector2(enemyWidth / 2f, enemyHeight / 2f));
                 }
             }
 
@@ -210,7 +211,7 @@ namespace CoinClicker
         public void OnUpgradeClicked(IEnumerable<double> values, IEnumerable<int> times)
         {
             if(values.Count()>0)
-                autoClickSound.Play();
+                autoClickSound.Play(mainWindowViewModel.FxVolume/100f);
 
             for (int i = 0; i < values.Count(); i++)
             {
@@ -243,6 +244,7 @@ namespace CoinClicker
 
         private void Explode(Vector2 pos)
         {
+            explosionSound.Play(mainWindowViewModel.FxVolume/100f);
             for (int j = 0; j < explosionFragmentCount; j++)
             {
                 explosion.AddInstance(0, pos, Particle<object>.MovementType.RADIAL);

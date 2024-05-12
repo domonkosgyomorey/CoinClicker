@@ -29,6 +29,12 @@ namespace CoinClicker
                 myMusicPlayer?.SetVolume(value/100f);
             } }
 
+        private float fxVolume;
+
+        public float FxVolume { get => fxVolume; set {
+                fxVolume = value;
+            } }
+
 
         public MainWindowViewModel(IClickerLogic clickerLogic, StockWindow stockWindow, TutorialWindow tutorialWindow)
         {
@@ -48,6 +54,7 @@ namespace CoinClicker
 
             myMusicPlayer = new MyMusicPlayer(Utility.MUSIC_PATH);
             Volume = 50;
+            FxVolume = 50;
             myMusicPlayer.Play();
         }
 

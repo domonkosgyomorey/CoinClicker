@@ -29,6 +29,7 @@ namespace CoinClicker
         public static string TRESURE_CHEST_PATH = Path.GetFullPath(RESOURCE_PATH + "\\chest.png");
         public static string ENEMY_PATH = Path.GetFullPath(RESOURCE_PATH + "\\enemy.png");
         public static string ENEMY_EXPLODE_ANIMATION = Path.GetFullPath(RESOURCE_PATH + "\\explosion.mp4");
+        public static string EXPLOSION_SOUND = Path.GetFullPath(SOUND_PATH + "\\explosion.mp3");
 
         public static double MAX_STOCK_BUY_VAL = 1E+20;
         public static double MIN_STOCK_BUY_VAL = -1E+20;

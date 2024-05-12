@@ -193,10 +193,15 @@ AncestorType={x:Type Window}}, Path=DataContext.ClickerLogic.BuyUpgradeCommand}"
                         </CheckBox.LayoutTransform>
                     </CheckBox>
 
-                    <local:OutlinedTextBlock Grid.Row="1" Grid.Column="0"  Fill="White" Stroke="Black" VerticalAlignment="Center" StrokeThickness="1" HorizontalAlignment="Center" Text="Volume" FontSize="32" FontWeight="SemiBold"/>
+                    <local:OutlinedTextBlock Grid.Row="1" Grid.Column="0"  Fill="White" Stroke="Black" VerticalAlignment="Center" StrokeThickness="1" HorizontalAlignment="Center" Text="Music volume" FontSize="32" FontWeight="SemiBold"/>
                     <StackPanel Grid.Row="1" Grid.Column="1">
-                        <local:OutlinedTextBlock Grid.Row="1" Grid.Column="0" Margin="10" Fill="White" Stroke="Black" VerticalAlignment="Center" StrokeThickness="1" HorizontalAlignment="Center" Text="{Binding ElementName=VolumeSlider, Path=Value, StringFormat={}{0:n2}}" FontSize="24" FontWeight="SemiBold"/>
-                        <Slider Grid.Row="1" VerticalAlignment="Center" Grid.Column="1" x:Name="VolumeSlider" TickFrequency="1"  Value="{Binding Volume, Mode=TwoWay}" Minimum="0" Maximum="100"/>
+                        <local:OutlinedTextBlock Margin="10" Fill="White" Stroke="Black" VerticalAlignment="Center" StrokeThickness="1" HorizontalAlignment="Center" Text="{Binding ElementName=VolumeSlider, Path=Value, StringFormat={}{0:n0}}" FontSize="24" FontWeight="SemiBold"/>
+                        <Slider VerticalAlignment="Center" x:Name="VolumeSlider" TickFrequency="1"  Value="{Binding Volume, Mode=TwoWay}" Minimum="0" Maximum="100"/>
+                    </StackPanel>
+                    <local:OutlinedTextBlock Grid.Row="2" Grid.Column="0"  Fill="White" Stroke="Black" VerticalAlignment="Center" StrokeThickness="1" HorizontalAlignment="Center" Text="Fx volume" FontSize="32" FontWeight="SemiBold"/>
+                    <StackPanel Grid.Row="2" Grid.Column="1">
+                        <local:OutlinedTextBlock Margin="10" Fill="White" Stroke="Black" VerticalAlignment="Center" StrokeThickness="1" HorizontalAlignment="Center" Text="{Binding ElementName=FxVolumeSlider, Path=Value, StringFormat={}{0:n0}}" FontSize="24" FontWeight="SemiBold"/>
+                        <Slider VerticalAlignment="Center" x:Name="FxVolumeSlider" TickFrequency="1"  Value="{Binding FxVolume, Mode=TwoWay}" Minimum="0" Maximum="100"/>
                     </StackPanel>
                 </Grid>
                 <Button VerticalAlignment="Bottom" Style="{StaticResource HomeButton}" Grid.Row="2" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.HomeButtonClicked}">

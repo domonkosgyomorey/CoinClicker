@@ -16,8 +16,9 @@ namespace CoinClicker
             this.minMsBetweenPlay = minMsBetweenPlay;
         }
 
-        public void Play()
+        public void Play(float volume)
         {
+            player.Volume = volume;
             if ((DateTime.Now - lastAutoClickTime).TotalMilliseconds >= minMsBetweenPlay)
             {
                 lastAutoClickTime = DateTime.Now;
