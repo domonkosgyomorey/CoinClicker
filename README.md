@@ -15,6 +15,8 @@ Latest version
 - Auto saving system in json
 - Easy to MOD the game, throught save files
 - Stock simulation system, for deposit money in different stocks
+- Enemies which we want to destroy with clicking
+- Treasure chests with some loot
 
 # How to MOD the game
 there are a few save fils in the Resources/Save folder.
